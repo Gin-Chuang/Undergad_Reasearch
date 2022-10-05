@@ -51,36 +51,39 @@ void step1run(){
 void step2run(){
     while(stepper2.distanceToGo()!= 0){  
       stepper2.run(); 
+      Serial.println(stepper2.targetPosition());
+      Serial.println(stepper2.distanceToGo());
+      delay(50);
     }   
 }
 
-void Y_motor(){
+void Y_motor(int num){
   Y_to_end = 0;
   while( Y_to_end == 0 ){
        if ( stepper2.currentPosition() == 0 ){ 
             stepper2.moveTo(position_0);
             step2run();        
-            Serial.println("cam");
+            Serial.println(num + 1);
             delay(15000);
       } else if ( stepper2.currentPosition() == position_0  ){   
             stepper2.moveTo(position_1); 
             step2run(); 
-            Serial.println("cam");
+            Serial.println(num + 2);
             delay(15000);            
       } else if ( stepper2.currentPosition() == position_1  ){   
             stepper2.moveTo(position_2); 
             step2run(); 
-            Serial.println("cam");   
+            Serial.println(num + 3);   
             delay(15000);  
       } else if ( stepper2.currentPosition() == position_2  ){    
             stepper2.moveTo(position_3);
             step2run();
-            Serial.println("cam");
+            Serial.println(num + 4);
             delay(15000);             
       } else if ( stepper2.currentPosition() == position_3  ){  
             stepper2.moveTo(0);
             step2run();
-            Serial.println("cam");
+            Serial.println(num + 5);
             delay(15000); 
             Y_to_end = 1; // Go through once            
       }  
@@ -92,31 +95,31 @@ void Y_motor(){
 void loop(){
 
     if ( stepper1.currentPosition() == 0 ){ 
-        Y_motor();
+        Y_motor(10);
         stepper1.moveTo(position_0);
         step1run();
         Serial.println("cam");
         delay(15000);
   } else if ( stepper1.currentPosition() == position_0  ){   
-        Y_motor();
+        Y_motor(20);
         stepper1.moveTo(position_1); 
         step1run(); 
         Serial.println("cam");
         delay(15000);            
   } else if ( stepper1.currentPosition() == position_1  ){   
-        Y_motor();
+        Y_motor(30);
         stepper1.moveTo(position_2); 
         step1run(); 
         Serial.println("cam");   
         delay(15000);  
   } else if ( stepper1.currentPosition() == position_2  ){    
-        Y_motor();
+        Y_motor(40);
         stepper1.moveTo(position_3);
         step1run();         
         Serial.println("cam");
         delay(15000);             
   } else if ( stepper1.currentPosition() == position_3  ){ 
-        Y_motor();
+        Y_motor(50);
         stepper1.moveTo(0); 
         step1run();   
         delay(15000);
