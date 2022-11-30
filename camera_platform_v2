@@ -1,0 +1,123 @@
+import serial
+import time
+import picamera
+import serial
+import time
+import os
+
+from collections import deque
+from datetime import datetime
+
+directory = str(datetime.now().date())
+parent_dir = f'/home/pi/Desktop/Gin/{directory}'
+
+path = os.path.join(parent_dir, directory)
+
+if not os.path.exists(path):
+    os.mkdir(path)
+    print("Directory", directory, "created")
+else:
+    print("Directory", directory, "already exists")    
+
+
+
+def camera(x,y):
+    resolution = 1440, 1080
+    camera = picamera.PiCamera(resolution=resolution)
+    camera.start_preview()
+    camera.capture(f'/home/pi/Desktop/Gin/{datetime.now().date()}/{x}_{y}_{datetime.now().date()}.jpg')
+
+    camera.stop_preview()
+    camera.close()
+
+counter = 0
+arduino = serial.Serial('/dev/ttyACM0', 9600)
+
+def a():
+    arduino.write(b"a")
+    time.sleep(10)
+    counter += 1
+def w():
+    arduino.write(b"w")
+    time.sleep(10)
+    counter += 1
+def d():
+    arduino.write(b"d")
+    time.sleep(3)
+    counter += 1
+def s():
+    arduino.write(b"s")
+    time.sleep(3)
+    counter += 1
+def rightgap():
+    arduino.write(b"rightgap")
+    time.sleep(3)
+    counter += 1
+def downgap():
+    arduino.write(b"downgap")
+    time.sleep(3)
+    counter += 1
+def z():
+    arduino.write(b"z")
+    time.sleep(100)
+    counter = 0
+
+mode = input("a for run all b for step mode")
+        
+
+if mode == "a":
+    z()
+    for i in range(10):
+        camera(0,i)
+        for k in range(4):
+            d()
+            camera(k+1,i)
+        rightgap()
+        camera(5,i)
+        for j in range(4):
+            d()
+            camera(j+6,i)
+        a()
+    w()
+
+
+if mode == "b":
+
+    action = input("Enter a action: ") # Taking input from user
+##TODO modify condition
+    print(action)
+
+    if action == "a":
+        print(action)
+        arduino.write(b"a")
+        time.sleep(1)
+        
+    elif action == "w":
+        print(action)
+        arduino.write(b"w")
+        time.sleep(1)
+        
+    elif action == "d":
+        print(action)
+        arduino.write(b"d")
+        time.sleep(1)
+        
+    elif action == "s":
+        print(action)
+        arduino.write(b"s")
+        time.sleep(1)
+        
+    elif action == "rightgap":
+        print(action)
+        arduino.write(b"rightgap")
+        time.sleep(1)
+
+    elif action == "leftgap":
+        print(action)
+        arduino.write(b"leftgap")
+        time.sleep(1)
+        
+    elif action == "z":
+        print(action)
+        arduino.write(b"z")
+        time.sleep(1)
