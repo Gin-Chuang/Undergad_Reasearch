@@ -1,6 +1,6 @@
 import serial
 import time
-import picamera
+# import picamera
 import serial
 import time
 import os
@@ -8,59 +8,59 @@ import os
 from collections import deque
 from datetime import datetime
 
-directory = str(datetime.now().date())
-parent_dir = f'/home/pi/Desktop/Gin/{directory}'
+# directory = str(datetime.now().date())
+# parent_dir = f'/home/pi/Desktop/Gin/{directory}'
 
-path = os.path.join(parent_dir, directory)
+# path = os.path.join(parent_dir, directory)
 
-if not os.path.exists(path):
-    os.mkdir(path)
-    print("Directory", directory, "created")
-else:
-    print("Directory", directory, "already exists")    
+# if not os.path.exists(path):
+#     os.mkdir(path)
+#     print("Directory", directory, "created")
+# else:
+#     print("Directory", directory, "already exists")    
 
-
-
+import serial.tools.list_ports as ports
+print("hey")
+com_ports = list(ports.comports())  # create a list of com ['COM1','COM2']
+for i in com_ports:
+    print(i.device) 
+print(com_ports)
 def camera(x,y):
-    resolution = 1440, 1080
-    camera = picamera.PiCamera(resolution=resolution)
-    camera.start_preview()
-    camera.capture(f'/home/pi/Desktop/Gin/{datetime.now().date()}/{x}_{y}_{datetime.now().date()}.jpg')
+    print(x,y)
+    
+    # resolution = 1440, 1080
+    # camera = picamera.PiCamera(resolution=resolution)
+    # camera.start_preview()
+    # camera.capture(f'/home/pi/Desktop/Gin/{datetime.now().date()}/{y}_{x}_{datetime.now().date()}.jpg')
 
-    camera.stop_preview()
-    camera.close()
+    # camera.stop_preview()
+    # camera.close()
 
 counter = 0
-arduino = serial.Serial('/dev/ttyACM0', 9600)
+# arduino = serial.Serial('/dev/ttyACM0', 9600)
+arduino = serial.Serial(port = 'COM3', baudrate=9600)
 
 def a():
     arduino.write(b"a")
     time.sleep(10)
-    counter += 1
 def w():
     arduino.write(b"w")
     time.sleep(10)
-    counter += 1
 def d():
     arduino.write(b"d")
     time.sleep(3)
-    counter += 1
 def s():
     arduino.write(b"s")
     time.sleep(3)
-    counter += 1
 def rightgap():
-    arduino.write(b"rightgap")
+    arduino.write(b"r")
     time.sleep(3)
-    counter += 1
 def downgap():
-    arduino.write(b"downgap")
+    arduino.write(b"v")
     time.sleep(3)
-    counter += 1
 def z():
     arduino.write(b"z")
-    time.sleep(100)
-    counter = 0
+    time.sleep(1)
 
 mode = input("a for run all b for step mode")
         
@@ -82,42 +82,42 @@ if mode == "a":
 
 
 if mode == "b":
+    while True:
+        action = input("Enter a action: ") # Taking input from user
+    ##TODO modify condition
+        print(action)
 
-    action = input("Enter a action: ") # Taking input from user
-##TODO modify condition
-    print(action)
+        if action == "a":
+            print(action)
+            arduino.write(b"a")
+            time.sleep(10)
+            
+        elif action == "w":
+            print(action)
+            arduino.write(b"w")
+            time.sleep(10)
+            
+        elif action == "d":
+            print(action)
+            arduino.write(b"d")
+            time.sleep(3)
+            
+        elif action == "s":
+            print(action)
+            arduino.write(b"s")
+            time.sleep(3)
+            
+        elif action == "r":
+            print(action)
+            arduino.write(b"r")
+            time.sleep(3)
 
-    if action == "a":
-        print(action)
-        arduino.write(b"a")
-        time.sleep(1)
-        
-    elif action == "w":
-        print(action)
-        arduino.write(b"w")
-        time.sleep(1)
-        
-    elif action == "d":
-        print(action)
-        arduino.write(b"d")
-        time.sleep(1)
-        
-    elif action == "s":
-        print(action)
-        arduino.write(b"s")
-        time.sleep(1)
-        
-    elif action == "rightgap":
-        print(action)
-        arduino.write(b"rightgap")
-        time.sleep(1)
-
-    elif action == "leftgap":
-        print(action)
-        arduino.write(b"leftgap")
-        time.sleep(1)
-        
-    elif action == "z":
-        print(action)
-        arduino.write(b"z")
-        time.sleep(1)
+        elif action == "v":
+            print(action)
+            arduino.write(b"v")
+            time.sleep(3)
+            
+        elif action == "z":
+            print(action)
+            arduino.write(b"z")
+            time.sleep(3)
